@@ -1,0 +1,19 @@
+alternativa,metrica,n,promedio,desviacion
+Python (FastAPI),throughput_rps,10,174.3324,1.7845
+Python (FastAPI),latencia_p95_ms,10,636.3011,7.7894
+Python (FastAPI),latencia_prom_ms,10,286.2493,2.9039
+Python (FastAPI),tasa_error_pct,10,0,0.0
+Python (FastAPI),ram_mb,10,38.1802,1.0465
+Python (FastAPI),cpu_pct,10,95.9642,2.8409
+Node.js (Express),throughput_rps,10,532.8531,15.8932
+Node.js (Express),latencia_p95_ms,10,135.0136,13.0685
+Node.js (Express),latencia_prom_ms,10,93.5668,2.8896
+Node.js (Express),tasa_error_pct,10,0,0.0
+Node.js (Express),ram_mb,10,32.5623,0.5483
+Node.js (Express),cpu_pct,10,94.6915,3.114
+C# (.NET),throughput_rps,10,1332.1402,45.8708
+C# (.NET),latencia_p95_ms,10,68.5883,2.6827
+C# (.NET),latencia_prom_ms,10,37.1614,1.3097
+C# (.NET),tasa_error_pct,10,0,0.0
+C# (.NET),ram_mb,10,53.5712,2.1564
+C# (.NET),cpu_pct,10,77.4483,2.5416

@@ -1,0 +1,7 @@
+clave,nombre,tipo,unidad
+throughput,Throughput,max,peticiones/s
+latencia_p95,Latencia p95,min,ms
+ram,Uso de memoria RAM,min,MB
+cpu,Uso de CPU,min,%
+loc,Lineas de codigo,min,lineas
+popularidad,Popularidad del framework,max,% de uso

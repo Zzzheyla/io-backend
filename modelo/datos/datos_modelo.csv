@@ -1,0 +1,4 @@
+alternativa,throughput,latencia_p95,ram,cpu,loc,popularidad,tasa_error
+Python (FastAPI),174.33,636.3,38.18,95.96,56,14.8,0
+Node.js (Express),532.85,135.01,32.56,94.69,69,19.9,0
+C# (.NET),1332.14,68.59,53.57,77.45,66,19.7,0

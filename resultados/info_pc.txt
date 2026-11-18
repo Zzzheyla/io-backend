@@ -1,0 +1,24 @@
+﻿Fecha: 2026-11-17 21:08
+Fabricante y modelo: ASUSTeK COMPUTER INC. Vivobook_ASUSLaptop M1502YA_M1502YA
+Procesador: AMD Ryzen 7 7730U with Radeon Graphics         
+Nucleos fisicos: 8 | Hilos logicos: 16 | Frecuencia maxima: 2000 MHz
+Memoria RAM total: 15.4 GB
+Memoria RAM libre en este momento: 2.8 GB
+Sistema operativo: Microsoft Windows 11 Pro (version 10.0.26200)
+
+Discos:
+  SOLIDIGM SSDPFKNU512GZ | tipo: SSD | 477 GB
+
+Configuracion de WSL (.wslconfig):
+[wsl2]
+memory=4GB
+processors=2
+swap=2GB
+localhostForwarding=true
+networkingMode=mirrored
+
+[experimental]
+hostAddressLoopback=true
+
+Plan de energia activo:
+GUID de plan de energía: 381b4222-f694-41f0-9685-ff5bb260df2e  (Equilibrado)

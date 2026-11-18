@@ -1,0 +1,264 @@
+<title>Calculadora de backend FISEI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: panel de controles a la izquierda, resultado y costos a la derecha; una sola columna en el celular */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --fg: #16202a;
+  --muted: #5b6875;
+  --line: #d9e0e6;
+  --accent: #1f5fbf;
+  --py: #b8860b;
+  --node: #2f8f4e;
+  --cs: #7b3fbf;
+  --bad: #b3261e;
+  --bad-bg: #fbeceb;
+  --ok-bg: #e8f1fb;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f151b; --surface: #17202a; --fg: #e6edf3; --muted: #9aa8b5; --line: #2a3643;
+    --accent: #6ea8fe; --py: #e0b44c; --node: #5cc27f; --cs: #b48cf2; --bad: #ff8a80; --bad-bg: #3a1f1e; --ok-bg: #1c2a3b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f151b; --surface: #17202a; --fg: #e6edf3; --muted: #9aa8b5; --line: #2a3643;
+  --accent: #6ea8fe; --py: #e0b44c; --node: #5cc27f; --cs: #b48cf2; --bad: #ff8a80; --bad-bg: #3a1f1e; --ok-bg: #1c2a3b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 40px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 20px; }
+header h1 { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; margin: 0; text-wrap: balance; }
+header p { margin: 4px 0 0; color: var(--muted); max-width: 68ch; }
+.grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 820px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; min-width: 0; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin: 0; letter-spacing: 0.01em; }
+.label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button {
+  font: inherit; font-size: 0.82rem; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line);
+  background: transparent; color: var(--fg); cursor: pointer;
+}
+.presets button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.presets button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.weights { display: grid; gap: 10px; }
+.w-row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; gap: 4px 10px; align-items: center; }
+.w-row label { font-size: 0.88rem; }
+.w-row output { font-family: var(--font-mono); font-size: 0.82rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.w-row input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: 0.82rem; color: var(--muted); }
+.field input {
+  font: inherit; font-family: var(--font-mono); font-variant-numeric: tabular-nums; padding: 7px 9px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); width: 100%;
+}
+.verdict { border-radius: 10px; padding: 16px 18px; background: var(--ok-bg); display: grid; gap: 4px; }
+.verdict .big { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; }
+.verdict p { margin: 0; color: var(--fg); }
+.rank { display: grid; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 150px minmax(0, 1fr) 64px; gap: 10px; align-items: center; }
+@media (max-width: 480px) { .bar-row { grid-template-columns: 110px minmax(0, 1fr) 56px; } }
+.bar-row .name { font-weight: 500; font-size: 0.9rem; }
+.track { height: 14px; background: var(--bg); border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+.fill { height: 100%; border-radius: 3px; transition: width 0.25s ease; }
+.score { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.excluded { font-size: 0.82rem; color: var(--bad); background: var(--bad-bg); padding: 2px 8px; border-radius: 4px; justify-self: start; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+td.best { font-weight: 600; color: var(--accent); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.note { font-size: 0.82rem; color: var(--muted); margin: 0; }
+.note code { font-family: var(--font-mono); font-size: 0.8rem; }
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Calculadora de backend FISEI</h1>
+    <p>Ajusta qué te importa y cuánto tráfico esperas. La calculadora aplica el modelo de decisión del proyecto (filtro, normalización y suma ponderada) a las mediciones reales de Python, Node.js y C#, y estima cuántos servidores necesitarías.</p>
+  </header>
+
+  <div class="grid">
+    <section class="panel" aria-labelledby="t-prior">
+      <h2 id="t-prior">Tus prioridades</h2>
+      <div class="presets" role="group" aria-label="Perfiles predefinidos">
+        <button type="button" id="p-base" data-preset="base">Encuesta AHP</button>
+        <button type="button" id="p-rend" data-preset="rend">Rendimiento</button>
+        <button type="button" id="p-prod" data-preset="prod">Productividad</button>
+        <button type="button" id="p-mem" data-preset="mem">Poca memoria</button>
+      </div>
+      <div class="weights" id="weights"></div>
+      <p class="note">Los pesos se reparten para sumar 100 %. El perfil «Encuesta AHP» usa los pesos de las 20 encuestas (RC = 0.0207).</p>
+
+      <h2>Restricciones y tráfico</h2>
+      <div class="fields">
+        <div class="field"><label for="f-lat">Latencia p95 máxima (ms)</label><input id="f-lat" type="number" min="1" step="1" value="300"></div>
+        <div class="field"><label for="f-dem">Tráfico esperado (pet/s)</label><input id="f-dem" type="number" min="1" step="1" value="1000"></div>
+        <div class="field"><label for="f-price">Precio por servidor (USD/mes)</label><input id="f-price" type="number" min="0" step="0.5" value="4"></div>
+        <div class="field"><label for="f-util">Uso máximo por servidor (%)</label><input id="f-util" type="number" min="10" max="100" step="5" value="70"></div>
+      </div>
+      <p class="note">Servidor de referencia: 1 vCPU y 512 MiB (DigitalOcean, USD 4/mes), los mismos límites de la prueba.</p>
+    </section>
+
+    <div class="panel" aria-live="polite">
+      <div class="verdict" id="verdict"></div>
+      <div class="rank" id="rank"></div>
+
+      <h2>Servidores y costo para tu tráfico</h2>
+      <div class="table-wrap"><table id="cost"></table></div>
+      <p class="note" id="cost-note" hidden>* No cumple la latencia máxima; se muestra solo como referencia.</p>
+
+      <h2>Datos medidos</h2>
+      <div class="table-wrap"><table id="data"></table></div>
+      <p class="note">Promedio de 10 repeticiones por lenguaje (15/11/2026): API equivalente en contenedores Docker con 1 CPU y 512 MB, PostgreSQL 16, k6 con 50 usuarios durante 60 s. Popularidad: % de uso del framework, Stack Overflow Developer Survey 2025. Tasa de errores: 0 % en las 30 pruebas.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------- datos del proyecto
+const ALT = [
+  { id: "py",   name: "Python (FastAPI)",  color: "var(--py)",   thr: 174.33,  lat: 636.30, ram: 38.18, cpu: 95.96, loc: 56, pop: 14.8, err: 0 },
+  { id: "node", name: "Node.js (Express)", color: "var(--node)", thr: 532.85,  lat: 135.01, ram: 32.56, cpu: 94.69, loc: 69, pop: 19.9, err: 0 },
+  { id: "cs",   name: "C# (.NET)",         color: "var(--cs)",   thr: 1332.14, lat: 68.59,  ram: 53.57, cpu: 77.45, loc: 66, pop: 19.7, err: 0 },
+];
+const CRIT = [
+  { k: "thr", name: "Throughput", unit: "pet/s", max: true },
+  { k: "lat", name: "Latencia p95", unit: "ms", max: false },
+  { k: "ram", name: "Memoria RAM", unit: "MB", max: false },
+  { k: "cpu", name: "Uso de CPU", unit: "%", max: false },
+  { k: "loc", name: "Líneas de código", unit: "líneas", max: false },
+  { k: "pop", name: "Popularidad", unit: "%", max: true },
+];
+const PRESETS = {
+  base: { thr: 18.82, lat: 19.36, ram: 20.55, cpu: 23.15, loc: 9.82, pop: 8.30 },
+  rend: { thr: 35, lat: 35, ram: 5, cpu: 5, loc: 10, pop: 10 },
+  prod: { thr: 10, lat: 10, ram: 5, cpu: 5, loc: 35, pop: 35 },
+  mem:  { thr: 10, lat: 10, ram: 50, cpu: 10, loc: 10, pop: 10 },
+};
+
+// ---------------------------------------------------------------- modelo (mismo procedimiento que el informe)
+function evaluate(rawWeights, latMax) {
+  const total = CRIT.reduce((s, c) => s + rawWeights[c.k], 0) || 1;
+  const w = Object.fromEntries(CRIT.map(c => [c.k, rawWeights[c.k] / total]));
+  const feasible = ALT.filter(a => a.lat <= latMax && a.err <= 1);
+  const scores = {};
+  for (const a of feasible) {
+    let s = 0;
+    for (const c of CRIT) {
+      const vals = feasible.map(b => b[c.k]);
+      const r = c.max ? a[c.k] / Math.max(...vals) : Math.min(...vals) / a[c.k];
+      s += w[c.k] * r;
+    }
+    scores[a.id] = s;
+  }
+  return { w, feasible, scores };
+}
+function sizing(demand, util, price) {
+  return ALT.map(a => {
+    const cap = util * a.thr;
+    const n = Math.max(1, Math.ceil(demand / cap));
+    return { id: a.id, cap, n, cost: n * price };
+  });
+}
+
+// ---------------------------------------------------------------- interfaz
+const weights = { ...PRESETS.base };
+const wBox = document.getElementById("weights");
+CRIT.forEach(c => {
+  const row = document.createElement("div");
+  row.className = "w-row";
+  row.innerHTML = `<label for="w-${c.k}">${c.name}</label><output id="o-${c.k}" for="w-${c.k}"></output>
+    <input id="w-${c.k}" type="range" min="0" max="100" step="0.5" value="${weights[c.k]}">`;
+  wBox.appendChild(row);
+  row.querySelector("input").addEventListener("input", e => {
+    weights[c.k] = parseFloat(e.target.value);
+    setPressed(null);
+    render();
+  });
+});
+function setPressed(key) {
+  document.querySelectorAll(".presets button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.preset === key)));
+}
+document.querySelectorAll(".presets button").forEach(b => b.addEventListener("click", () => {
+  Object.assign(weights, PRESETS[b.dataset.preset]);
+  CRIT.forEach(c => { document.getElementById(`w-${c.k}`).value = weights[c.k]; });
+  setPressed(b.dataset.preset);
+  render();
+}));
+["f-lat", "f-dem", "f-price", "f-util"].forEach(id => document.getElementById(id).addEventListener("input", render));
+
+const fmt = (x, d = 4) => x.toFixed(d);
+const byId = id => ALT.find(a => a.id === id);
+
+function render() {
+  const latMax = parseFloat(document.getElementById("f-lat").value) || 0;
+  const demand = Math.max(1, parseFloat(document.getElementById("f-dem").value) || 1);
+  const price = Math.max(0, parseFloat(document.getElementById("f-price").value) || 0);
+  const util = Math.min(100, Math.max(10, parseFloat(document.getElementById("f-util").value) || 70)) / 100;
+
+  const { w, feasible, scores } = evaluate(weights, latMax);
+  CRIT.forEach(c => { document.getElementById(`o-${c.k}`).textContent = (w[c.k] * 100).toFixed(1) + " %"; });
+
+  const ranked = feasible.map(a => a.id).sort((x, y) => scores[y] - scores[x]);
+  const sizes = sizing(demand, util, price);
+  const cheapest = Math.min(...sizes.filter(s => feasible.some(a => a.id === s.id)).map(s => s.cost));
+
+  const verdict = document.getElementById("verdict");
+  if (!ranked.length) {
+    verdict.innerHTML = `<span class="label">Resultado</span><div class="big">Ningún lenguaje cumple</div><p>Sube la latencia máxima: el más rápido tiene un p95 de 68.59 ms.</p>`;
+  } else {
+    const win = byId(ranked[0]);
+    const s = sizes.find(z => z.id === win.id);
+    const second = ranked[1] ? byId(ranked[1]) : null;
+    const gap = second ? scores[win.id] - scores[second.id] : null;
+    verdict.innerHTML = `<span class="label">Recomendado</span><div class="big"><span class="dot" style="background:${win.color}"></span>${win.name}</div>
+      <p>Puntaje ${fmt(scores[win.id])}${second ? `, ${fmt(gap)} por encima de ${second.name}` : ""}. Para ${demand.toLocaleString("es-EC")} pet/s necesita ${s.n} ${s.n === 1 ? "servidor" : "servidores"}: USD ${s.cost.toFixed(2)} al mes.</p>`;
+  }
+
+  const rank = document.getElementById("rank");
+  rank.innerHTML = "";
+  ALT.slice().sort((a, b) => (scores[b.id] ?? -1) - (scores[a.id] ?? -1)).forEach(a => {
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    if (a.id in scores) {
+      row.innerHTML = `<span class="name">${a.name}</span><div class="track"><div class="fill" style="width:${(scores[a.id] * 100).toFixed(1)}%;background:${a.color}"></div></div><span class="score">${fmt(scores[a.id])}</span>`;
+    } else {
+      row.innerHTML = `<span class="name">${a.name}</span><span class="excluded">Descartado: p95 ${a.lat} ms supera ${latMax} ms</span><span></span>`;
+    }
+    rank.appendChild(row);
+  });
+
+  document.getElementById("cost").innerHTML = `<thead><tr><th>Lenguaje</th><th>Capacidad útil</th><th>Servidores</th><th>USD/mes</th></tr></thead><tbody>` +
+    sizes.map(s => {
+      const a = byId(s.id);
+      const ok = feasible.some(f => f.id === s.id);
+      const best = ok && s.cost === cheapest ? ' class="best"' : "";
+      return `<tr><td><span class="dot" style="background:${a.color}"></span>${a.name}${ok ? "" : " *"}</td><td>${s.cap.toFixed(1)} pet/s</td><td>${s.n}</td><td${best}>${s.cost.toFixed(2)}</td></tr>`;
+    }).join("") + `</tbody>`;
+  document.getElementById("cost-note").hidden = feasible.length === ALT.length;
+
+  document.getElementById("data").innerHTML = `<thead><tr><th>Criterio</th>${ALT.map(a => `<th>${a.name.split(" ")[0]}</th>`).join("")}</tr></thead><tbody>` +
+    CRIT.map(c => `<tr><td>${c.name} (${c.unit}) ${c.max ? "↑" : "↓"}</td>${ALT.map(a => `<td>${a[c.k]}</td>`).join("")}</tr>`).join("") + `</tbody>`;
+}
+setPressed("base");
+render();
+</script>

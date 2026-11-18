@@ -1,0 +1,77 @@
+name: io-backend
+
+# Las tres APIs tienen EXACTAMENTE los mismos limites de CPU y memoria,
+# y usan la misma base de datos con los mismos datos.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: io-db
+    environment:
+      POSTGRES_USER: io
+      POSTGRES_PASSWORD: io
+      POSTGRES_DB: io
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./db/reset.sql:/sql/reset.sql:ro
+    cpus: 2.0
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U io -d io"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api-python:
+    build: ./apis/python-fastapi
+    container_name: io-api-python
+    environment:
+      DATABASE_URL: postgresql://io:io@db:5432/io
+    ports:
+      - "8001:8000"
+    cpus: 1.0
+    mem_limit: 512m
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api-node:
+    build: ./apis/node-express
+    container_name: io-api-node
+    environment:
+      DATABASE_URL: postgresql://io:io@db:5432/io
+    ports:
+      - "8002:3000"
+    cpus: 1.0
+    mem_limit: 512m
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api-csharp:
+    build: ./apis/csharp-dotnet
+    container_name: io-api-csharp
+    environment:
+      DATABASE_URL: Host=db;Port=5432;Username=io;Password=io;Database=io;Maximum Pool Size=10
+    ports:
+      - "8003:8080"
+    cpus: 1.0
+    mem_limit: 512m
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Comprobacion: la misma API de Python con 2 procesos de uvicorn y los mismos limites
+  api-python2:
+    build: ./apis/python-fastapi
+    container_name: io-api-python2
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--log-level", "warning"]
+    environment:
+      DATABASE_URL: postgresql://io:io@db:5432/io
+    ports:
+      - "8004:8000"
+    cpus: 1.0
+    mem_limit: 512m
+    depends_on:
+      db:
+        condition: service_healthy

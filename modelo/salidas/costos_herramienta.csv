@@ -1,0 +1,16 @@
+demanda_rps,alternativa,capacidad_util_rps,servidores,costo_mensual_usd
+100,Python (FastAPI),122.03,1,4
+100,Node.js (Express),373.0,1,4
+100,C# (.NET),932.5,1,4
+250,Python (FastAPI),122.03,3,12
+250,Node.js (Express),373.0,1,4
+250,C# (.NET),932.5,1,4
+500,Python (FastAPI),122.03,5,20
+500,Node.js (Express),373.0,2,8
+500,C# (.NET),932.5,1,4
+1000,Python (FastAPI),122.03,9,36
+1000,Node.js (Express),373.0,3,12
+1000,C# (.NET),932.5,2,8
+2000,Python (FastAPI),122.03,17,68
+2000,Node.js (Express),373.0,6,24
+2000,C# (.NET),932.5,3,12

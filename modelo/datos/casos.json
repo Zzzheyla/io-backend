@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "nombre": "Base",
+    "descripcion": "Pesos obtenidos con AHP para una aplicacion web tipica",
+    "pesos": "ahp"
+  },
+  {
+    "id": 2,
+    "nombre": "Prioridad en rendimiento",
+    "descripcion": "Suben los pesos de throughput y latencia",
+    "pesos": {"throughput": 0.35, "latencia_p95": 0.35, "ram": 0.05, "cpu": 0.05, "loc": 0.10, "popularidad": 0.10}
+  },
+  {
+    "id": 3,
+    "nombre": "Prioridad en productividad",
+    "descripcion": "Suben los pesos de lineas de codigo y popularidad del framework",
+    "pesos": {"throughput": 0.10, "latencia_p95": 0.10, "ram": 0.05, "cpu": 0.05, "loc": 0.35, "popularidad": 0.35}
+  },
+  {
+    "id": 4,
+    "nombre": "Caso limite",
+    "descripcion": "El umbral de latencia p95 se fija exactamente en el valor del lenguaje mas lento",
+    "pesos": "ahp",
+    "limite": {"criterio": "latencia_p95"}
+  }
+]

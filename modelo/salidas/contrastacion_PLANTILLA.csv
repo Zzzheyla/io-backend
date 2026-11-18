@@ -1,0 +1,10 @@
+caso,alternativa,puntaje_manual,puntaje_herramienta,diferencia
+1,C# (.NET),,0.9186,
+1,Node.js (Express),,0.7454,
+2,C# (.NET),,0.9794,
+2,Node.js (Express),,0.6044,
+3,C# (.NET),,0.9769,
+3,Node.js (Express),,0.8665,
+4,C# (.NET),,0.9037,
+4,Node.js (Express),,0.7312,
+4,Python (FastAPI),,0.5675,

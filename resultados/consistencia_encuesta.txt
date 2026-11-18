@@ -1,0 +1,24 @@
+Persona        RC  Estado
+P1         0.6745  INCONSISTENTE
+P2         0.2475  INCONSISTENTE
+P3         0.4812  INCONSISTENTE
+P4         0.4403  INCONSISTENTE
+P5         0.6351  INCONSISTENTE
+P6         0.2517  INCONSISTENTE
+P7         0.3598  INCONSISTENTE
+P8         0.5404  INCONSISTENTE
+P9         0.0412  consistente
+P10       -0.0000  consistente
+P11        1.2652  INCONSISTENTE
+P12        0.2184  INCONSISTENTE
+P13        0.8295  INCONSISTENTE
+P14        0.3759  INCONSISTENTE
+P15        0.4456  INCONSISTENTE
+P16        0.5345  INCONSISTENTE
+P17        0.0217  consistente
+P18        0.4465  INCONSISTENTE
+P19        0.1348  INCONSISTENTE
+P20        0.1417  INCONSISTENTE
+
+20 personas guardadas en modelo/datos/ahp_respuestas.csv
+Ahora ejecuten: python modelo/modelo_decision.py

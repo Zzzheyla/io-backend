@@ -1,0 +1,10 @@
+fecha: 2026-11-15 11:22:49
+repeticiones: 10 | duracion: 60s | calentamiento: 15s | usuarios: 50
+k6: grafana/k6:0.54.0
+docker: 29.7.2
+cpus del equipo: 2 | memoria: 4107935744 bytes | so: Docker Desktop
+CONTAINER           REPOSITORY              TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+io-api-csharp       io-backend-api-csharp   latest              linux/amd64         8453ed06489d        92.6MB              6 minutes ago
+io-api-node         io-backend-api-node     latest              linux/amd64         dc2f0ed5c1a8        64.8MB              7 minutes ago
+io-api-python       io-backend-api-python   latest              linux/amd64         b89b2c045efe        62.8MB              7 minutes ago
+io-db               postgres                16-alpine           linux/amd64         81e77a483348        116MB               2 days ago

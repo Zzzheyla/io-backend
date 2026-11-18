@@ -1,0 +1,6 @@
+{
+  "servidor": "DigitalOcean Basic Droplet 1 vCPU / 512 MiB (mismos limites de la prueba)",
+  "precio_mensual": 4,
+  "utilizacion": 0.7,
+  "demandas": [100, 250, 500, 1000, 2000]
+}

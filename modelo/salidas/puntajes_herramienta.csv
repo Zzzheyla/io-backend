@@ -1,0 +1,10 @@
+caso,nombre_caso,posicion,alternativa,puntaje
+1,Base,1,C# (.NET),0.9186
+1,Base,2,Node.js (Express),0.7454
+2,Prioridad en rendimiento,1,C# (.NET),0.9794
+2,Prioridad en rendimiento,2,Node.js (Express),0.6044
+3,Prioridad en productividad,1,C# (.NET),0.9769
+3,Prioridad en productividad,2,Node.js (Express),0.8665
+4,Caso limite,1,C# (.NET),0.9037
+4,Caso limite,2,Node.js (Express),0.7312
+4,Caso limite,3,Python (FastAPI),0.5675

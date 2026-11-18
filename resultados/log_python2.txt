@@ -1,0 +1,252 @@
+== Construyendo y levantando los contenedores
+ Image io-backend-api-node Building 
+ Image io-backend-api-csharp Building 
+ Image io-backend-api-python2 Building 
+ Image io-backend-api-python Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.13kB 0.0s done
+#1 DONE 0.0s
+
+#2 [api-csharp internal] load build definition from Dockerfile
+#2 transferring dockerfile: 376B 0.0s done
+#2 DONE 0.1s
+
+#3 [api-node internal] load build definition from Dockerfile
+#3 transferring dockerfile: 219B 0.0s done
+#3 DONE 0.1s
+
+#4 [api-python2 internal] load build definition from Dockerfile
+#4 transferring dockerfile: 287B 0.0s done
+#4 DONE 0.1s
+
+#5 [api-python internal] load metadata for docker.io/library/python:3.12-slim
+#5 ...
+
+#6 [api-csharp internal] load metadata for mcr.microsoft.com/dotnet/aspnet:8.0
+#6 DONE 0.7s
+
+#7 [api-csharp internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0
+#7 DONE 0.7s
+
+#8 [api-csharp internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [api-csharp stage-1 1/3] FROM mcr.microsoft.com/dotnet/aspnet:8.0@sha256:dccacae9e0e103b5d3ba5fbe442dd8d3316b990cd8f2ec9be0a0ec9db0c0e520
+#9 resolve mcr.microsoft.com/dotnet/aspnet:8.0@sha256:dccacae9e0e103b5d3ba5fbe442dd8d3316b990cd8f2ec9be0a0ec9db0c0e520 0.0s done
+#9 DONE 0.0s
+
+#10 [api-csharp build 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:1b955f179b02df4f0eb5fadedaa898cbe44d620a64aab52eec72c8e91d1355b5
+#10 resolve mcr.microsoft.com/dotnet/sdk:8.0@sha256:1b955f179b02df4f0eb5fadedaa898cbe44d620a64aab52eec72c8e91d1355b5 0.0s done
+#10 DONE 0.0s
+
+#11 [api-csharp internal] load build context
+#11 transferring context: 68B done
+#11 DONE 0.0s
+
+#12 [api-node internal] load metadata for docker.io/library/node:22-alpine
+#12 ...
+
+#13 [api-csharp stage-1 2/3] WORKDIR /app
+#13 CACHED
+
+#14 [api-csharp build 3/6] COPY ApiCsharp.csproj .
+#14 CACHED
+
+#15 [api-csharp build 4/6] RUN dotnet restore
+#15 CACHED
+
+#16 [api-csharp build 6/6] RUN dotnet publish -c Release -o /app --no-restore
+#16 CACHED
+
+#17 [api-csharp build 2/6] WORKDIR /src
+#17 CACHED
+
+#18 [api-csharp build 5/6] COPY Program.cs .
+#18 CACHED
+
+#19 [api-csharp stage-1 3/3] COPY --from=build /app .
+#19 CACHED
+
+#20 [api-csharp] exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:08fbe15ba8386566be87abd23ba4485047bbf0b7ace792e7cba8b1427eba98a8 done
+#20 exporting config sha256:c1dc7bdc0b67ad1f1981c59acba7716b3d3ab005c69af8ac1c78e89224b060fc done
+#20 exporting attestation manifest sha256:ffe0aa438a67fae880bfe54c7721d93b1355fa045153b8daa99fde1b6c667506 0.0s done
+#20 exporting manifest list sha256:f6ca9b032e3956badfa5f22c4f7f3a8606aec58549edbd42228b9fca2b3aea38 0.0s done
+#20 naming to docker.io/library/io-backend-api-csharp:latest done
+#20 unpacking to docker.io/library/io-backend-api-csharp:latest done
+#20 DONE 0.1s
+
+#5 [api-python internal] load metadata for docker.io/library/python:3.12-slim
+#5 ...
+
+#21 [api-csharp] resolving provenance for metadata file
+#21 DONE 0.0s
+
+#5 [api-python internal] load metadata for docker.io/library/python:3.12-slim
+#5 ...
+
+#12 [api-node internal] load metadata for docker.io/library/node:22-alpine
+#12 DONE 1.5s
+
+#5 [api-python2 internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.5s
+
+#22 [api-node internal] load .dockerignore
+#22 transferring context: 2B done
+#22 DONE 0.0s
+
+#23 [api-python2 internal] load .dockerignore
+#23 transferring context: 2B done
+#23 DONE 0.0s
+
+#24 [api-node internal] load build context
+#24 transferring context: 63B 0.0s done
+#24 DONE 0.1s
+
+#25 [api-python internal] load build context
+#25 transferring context: 64B 0.0s done
+#25 DONE 0.0s
+
+#26 [api-python2 1/5] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#26 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#26 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.1s done
+#26 DONE 0.1s
+
+#25 [api-python2 internal] load build context
+#25 DONE 0.0s
+
+#27 [api-node 1/5] FROM docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a
+#27 resolve docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a 0.1s done
+#27 DONE 0.1s
+
+#28 [api-python2 3/5] COPY requirements.txt .
+#28 CACHED
+
+#29 [api-python2 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#29 CACHED
+
+#30 [api-python2 2/5] WORKDIR /app
+#30 CACHED
+
+#31 [api-node 3/5] COPY package.json .
+#31 CACHED
+
+#32 [api-node 4/5] RUN npm install --omit=dev --no-audit --no-fund
+#32 CACHED
+
+#33 [api-node 2/5] WORKDIR /app
+#33 CACHED
+
+#34 [api-python2 5/5] COPY main.py .
+#34 CACHED
+
+#35 [api-node 5/5] COPY server.js .
+#35 CACHED
+
+#36 [api-node] exporting to image
+#36 exporting layers 0.0s done
+#36 exporting manifest sha256:485dceee617978b9a9264ed28888d4ceae71c69ec56eba1deeb8c22913029118 0.0s done
+#36 exporting config sha256:629d670d026f905d482e425b47f04cff43a49ed56358b529a7d868724fdef07e done
+#36 exporting attestation manifest sha256:a16a3d3beb59dbc55074445f7a1a1c323e0f64d87150bd29fd947d0f961d56e3
+#36 exporting attestation manifest sha256:a16a3d3beb59dbc55074445f7a1a1c323e0f64d87150bd29fd947d0f961d56e3 0.1s done
+#36 exporting manifest list sha256:2f7fc0a493aede2ec6b3cf54f6515941b75bc824721f5f4533c05728ce6f2d1f
+#36 ...
+
+#37 [api-python] exporting to image
+#37 exporting layers 0.0s done
+#37 exporting manifest sha256:eeae8539582cd25a091f6bcd3139a373cb17b95ec0d598012a8b3d87580b4c5c 0.0s done
+#37 exporting config sha256:6bb76b85618742ef7f7008b05604bdceac600b7fbb779b50d125fe1c58d419d5 done
+#37 exporting attestation manifest sha256:98bb307c9ede7ffb364a862e60f25882180a7fee6366900c5c06638ea5de7ec3 0.1s done
+#37 exporting manifest list sha256:c1b503b2efa949ec9633930ad81c6c33d14d5744132dd7390602ed0fc5263520 0.1s done
+#37 naming to docker.io/library/io-backend-api-python:latest 0.0s done
+#37 unpacking to docker.io/library/io-backend-api-python:latest 0.0s done
+#37 DONE 0.4s
+
+#36 [api-node] exporting to image
+#36 exporting manifest list sha256:2f7fc0a493aede2ec6b3cf54f6515941b75bc824721f5f4533c05728ce6f2d1f 0.1s done
+#36 naming to docker.io/library/io-backend-api-node:latest 0.0s done
+#36 unpacking to docker.io/library/io-backend-api-node:latest 0.0s done
+#36 DONE 0.4s
+
+#38 [api-python2] exporting to image
+#38 exporting layers 0.0s done
+#38 exporting manifest sha256:4d8f41069b4b9278a74bd513b33debd486e830a84728491e2edeef939a3c65fb 0.0s done
+#38 exporting config sha256:b2736e585ac1785f756f83e86a0007f6b11c0cfe68c5412ae67321843bfa8903 0.1s done
+#38 exporting attestation manifest sha256:c0f1f0b4b73405ecdfc1c352adac5a0661641ea3ccae3b6fd69105c934bb646c 0.1s done
+#38 exporting manifest list sha256:deb9f1cf317f033f3f6863168e9118adebbc2d376f635ca8267bee103a107128 0.0s done
+#38 naming to docker.io/library/io-backend-api-python2:latest 0.0s done
+#38 unpacking to docker.io/library/io-backend-api-python2:latest 0.0s done
+#38 DONE 0.5s
+
+#39 [api-python] resolving provenance for metadata file
+#39 DONE 0.1s
+
+#40 [api-python2] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [api-node] resolving provenance for metadata file
+#41 DONE 0.1s
+ Image io-backend-api-python Built 
+ Image io-backend-api-python2 Built 
+ Image io-backend-api-csharp Built 
+ Image io-backend-api-node Built 
+ Container io-api-csharp Recreate 
+ Container io-api-node Recreate 
+ Container io-api-python2 Creating 
+ Container io-api-python Recreate 
+ Container io-api-python2 Created 
+ Container io-api-python Recreated 
+ Container io-api-node Recreated 
+ Container io-api-csharp Recreated 
+ Container io-db Starting 
+ Container io-db Started 
+ Container io-db Waiting 
+ Container io-db Waiting 
+ Container io-db Waiting 
+ Container io-db Waiting 
+ Container io-db Healthy 
+ Container io-db Healthy 
+ Container io-api-python Starting 
+ Container io-api-node Starting 
+ Container io-db Healthy 
+ Container io-api-python2 Starting 
+ Container io-db Healthy 
+ Container io-api-csharp Starting 
+ Container io-api-csharp Started 
+ Container io-api-python2 Started 
+ Container io-api-node Started 
+ Container io-api-python Started 
+== Registrando versiones y equipo
+== Repeticion 1/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 2/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 3/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 4/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 5/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 6/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 7/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 8/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 9/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+== Repeticion 10/10 - python2
+ Container io-api-python2 Restarting 
+ Container io-api-python2 Started 
+Listo. Datos crudos en resultados/raw/python2_rep*.json

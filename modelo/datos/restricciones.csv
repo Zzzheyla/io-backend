@@ -1,0 +1,3 @@
+clave,operador,umbral,justificacion
+latencia_p95,<=,300,El 95 % de las peticiones debe responder en menos de 300 ms para que la aplicacion se perciba fluida
+tasa_error,<=,1,Una API con mas de 1 % de peticiones fallidas no es aceptable en produccion
