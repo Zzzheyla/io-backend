@@ -2,6 +2,9 @@
 
 **Universidad Técnica de Ambato · FISEI · Investigación Operativa**
 
+> 🧮 **Calculadora en línea:** https://zzzheyla.github.io/io-backend/calculadora/  
+> Mueve los pesos de los criterios y la demanda para ver qué lenguaje conviene y cuánto cuesta.
+
 Equipo: Santiago Alejandro Gamboa Araujo · Sheyla Eliana Pacha Lucintuña ·
 Martín Sebastián Palacios Vaca · David Alexander Pérez Alvarez
 
@@ -12,7 +15,7 @@ cambiaría si el peso de la memoria RAM superara 0.4488.
 | Contenido | Dónde |
 |---|---|
 | Informe (APA 7) | `Informe_Proyecto_Final_IO.docx` |
-| Calculadora (abrir en el navegador) | `calculadora/index.html` |
+| Calculadora | [Abrir en línea](https://zzzheyla.github.io/io-backend/calculadora/) · `calculadora/index.html` |
 | Modelo de decisión (Python) | `modelo/modelo_decision.py` → `modelo/salidas/` |
 | Mediciones (30 pruebas + 10 de Python con 2 procesos) | `resultados/` |
 | Respuestas de la encuesta AHP (anónimas) | `Importancia de criterios para elegir el lenguaje de backend.csv/` |
