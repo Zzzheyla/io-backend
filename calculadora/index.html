@@ -89,6 +89,14 @@ th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: rig
 th:first-child, td:first-child { text-align: left; white-space: normal; }
 th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
 .note { font-size: 0.84rem; color: var(--muted); margin: 0; }
+.extra { border-style: dashed; }
+.tag { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--py); border: 1px solid var(--py); border-radius: 999px; padding: 2px 10px; }
+.extra-win { font-size: 1rem; }
+.rank { display: grid; gap: 8px; }
+.bar-row { display: grid; grid-template-columns: 210px minmax(0, 1fr) 64px; gap: 10px; align-items: center; }
+@media (max-width: 520px) { .bar-row { grid-template-columns: 130px minmax(0, 1fr) 48px; } }
+.bar-row .name { font-size: 0.9rem; font-weight: 500; }
+.score { font-family: var(--font-mono); text-align: right; font-size: 0.88rem; }
 @media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
 </style>
 </head>
@@ -140,6 +148,25 @@ th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; colo
       </details>
     </section>
   </div>
+
+  <section class="panel extra" aria-labelledby="t-extra">
+    <div>
+      <span class="tag">Extra · estimación con datos de internet</span>
+      <h2 id="t-extra" style="margin-top:8px">¿Y si comparo con más lenguajes?</h2>
+      <p class="note" style="margin-top:4px">El estudio principal midió solo Python, Node.js y C# por tiempo. Para mostrar que el mismo modelo sirve con más opciones, aquí se comparan seis frameworks con datos públicos. Usa tus prioridades de la pregunta 1, pero solo con los 2 criterios que existen en internet para todos: <b>usuarios que atiende a la vez</b> y <b>popularidad</b>.</p>
+    </div>
+    <div class="extra-win" id="extra-win"></div>
+    <div class="rank" id="extra-rank"></div>
+    <p class="note" id="extra-w"></p>
+    <details>
+      <summary>Datos usados y advertencias</summary>
+      <div class="adv">
+        <div class="table-wrap"><table id="extra-data"></table></div>
+        <p class="note"><b>Fuentes:</b> rendimiento de la prueba «Fortunes» de TechEmpower Round 23 (febrero de 2025), resumida en <a href="https://dev.to/tuananhpham/popular-backend-frameworks-performance-benchmark-1bkh">este análisis</a>; popularidad de la <a href="https://survey.stackoverflow.co/2025/technology/">Stack Overflow Developer Survey 2025</a>.</p>
+        <p class="note"><b>Advertencias:</b> TechEmpower usa servidores potentes y código optimizado, así que sus números no se pueden mezclar con los de nuestras pruebas (por eso aquí no se usan nuestras mediciones). No hay datos comparables de tiempo de respuesta, memoria, procesador ni código, así que no se aplica el filtro ni esos criterios. FastAPI no aparece en ese resumen. El dato de Laravel es estimado por el autor de la fuente. Es una demostración, no una recomendación.</p>
+      </div>
+    </details>
+  </section>
 </div>
 
 <script>
@@ -301,6 +328,33 @@ function render() {
   $("data").innerHTML = `<thead><tr><th>Dato medido</th>${ALT.map(a => `<th>${a.name.split(" ")[0]}</th>`).join("")}</tr></thead><tbody>` +
     CRIT.map(c => `<tr><td>${c.name} (${c.unit}) ${c.max ? "↑ mejor más" : "↓ mejor menos"}</td>${ALT.map(a => `<td>${a[c.k]}</td>`).join("")}</tr>`).join("") + `</tbody>`;
 }
+// ---------------------------------------------------------------- extra: más frameworks con datos públicos
+// rps: TechEmpower Round 23, prueba Fortunes (PostgreSQL); pop: Stack Overflow 2025, % que usó el framework
+const EXTRA = [
+  { name: "C# · ASP.NET Core",  rps: 609966, pop: 19.7, color: "var(--cs)" },
+  { name: "Java · Spring Boot", rps: 243639, pop: 14.7, color: "#c0392b" },
+  { name: "JavaScript · Express", rps: 78136, pop: 19.9, color: "var(--node)" },
+  { name: "Ruby · Rails",       rps: 42546,  pop: 5.9,  color: "#9b2d5c" },
+  { name: "Python · Django",    rps: 32651,  pop: 12.6, color: "var(--py)" },
+  { name: "PHP · Laravel",      rps: 16800,  pop: 8.9,  color: "#5a67d8" },
+];
+function renderExtra() {
+  const t = weights.thr + weights.pop || 1;
+  const wt = weights.thr / t, wp = weights.pop / t;
+  const maxR = Math.max(...EXTRA.map(e => e.rps)), maxP = Math.max(...EXTRA.map(e => e.pop));
+  const rows = EXTRA.map(e => ({ ...e, s: wt * (e.rps / maxR) + wp * (e.pop / maxP) })).sort((a, b) => b.s - a.s);
+  $("extra-win").innerHTML = `Con estos datos encajaría mejor <b><span class="dot" style="background:${rows[0].color}"></span>${rows[0].name}</b>, seguido de ${rows[1].name}.`;
+  $("extra-rank").innerHTML = rows.map(e => `<div class="bar-row"><span class="name">${e.name}</span><div class="track"><div class="fill" style="width:${(e.s * 100).toFixed(1)}%;background:${e.color}"></div></div><span class="score">${Math.round(e.s * 100)}</span></div>`).join("");
+  const tot = CRIT.reduce((s, c) => s + weights[c.k], 0) || 1;
+  const missing = CRIT.filter(c => !["thr", "pop"].includes(c.k) && weights[c.k] / tot >= 0.3).map(c => c.name.toLowerCase());
+  $("extra-w").innerHTML = `Pesos usados: usuarios a la vez ${(wt * 100).toFixed(0)} % · popularidad ${(wp * 100).toFixed(0)} % (los mismos de tu prioridad, repartidos entre estos 2 criterios).` +
+    (missing.length ? `<br><b>Ojo:</b> a ti te importa mucho «${missing.join("» y «")}», pero ese dato no existe en internet para estos frameworks, así que esta comparación no puede tomarlo en cuenta. Para eso sirve la medición del estudio principal.` : "");
+  $("extra-data").innerHTML = `<thead><tr><th>Framework</th><th>Peticiones/s (TechEmpower)</th><th>Popularidad (%)</th></tr></thead><tbody>` +
+    EXTRA.map(e => `<tr><td>${e.name}</td><td>${e.rps.toLocaleString("es-EC")}</td><td>${e.pop}</td></tr>`).join("") + `</tbody>`;
+}
+const _render = render;
+render = function () { _render(); renderExtra(); };
+
 press("q1", "base");
 press("q2", "clase");
 render();
