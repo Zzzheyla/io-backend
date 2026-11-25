@@ -268,7 +268,7 @@ Cada puntaje es una recta: S_i(t) = b_i + (a_i - b_i) * t,  con a_i = r_ik  y  b
   Lineas de codigo (peso base 0.0982): el ganador no cambia para ningun peso
   Popularidad del framework (peso base 0.0830): en t = 0.9497 pasa de C# (.NET) a Node.js (Express)
 
-Grafica de sensibilidad guardada en /sessions/rcw-01xmx56whnjln4giawq9ctzv/mnt/Documents/io-backend/modelo/salidas/sensibilidad.png
+Grafica de sensibilidad guardada en C:\Users\Usuario\Documents\io-backend\modelo\salidas\sensibilidad.png
 
 ==============================================================================
 DIMENSIONAMIENTO Y COSTO MENSUAL
